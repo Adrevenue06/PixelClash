@@ -3,48 +3,59 @@ using TMPro;
 
 public class PlantSprouting : MonoBehaviour
 {
-    public ParticleSystem water;
     public ParticleSystem sproutEffect;
     public FollowMouse followMouse;
     public Animator anim;
     public TextMeshProUGUI treeText;
     public float treeCount;
-    public coinmanager cm;
+    public Collider2D plantCollider;
 
     void Start()
     {
         anim = GetComponent<Animator>();
     }
 
-
-    void OnTriggerEnter2D(Collider2D other)
+    void Update()
     {
+        if (followMouse.Starttime + 2f < Time.time)
         {
-            if(other.gameObject.CompareTag("Coin"))
-            {
-                cm.coinCount++;
-            }
+            anim.SetBool("isSprouting", true);
+            //sproutEffect.Play();
         }
-        if (other.CompareTag("Water"))
+        else if (followMouse.Starttime + 4f > Time.time)
         {
-            if (followMouse.Starttime + 5f < Time.time)
-            {
-                anim.SetBool("isSprouting", true);
-                sproutEffect.Play();
-            }
-            else if (followMouse.Starttime + 10f < Time.time)
-            {
-                anim.SetBool("isGrowing", true);
-                sproutEffect.Play();
-            }
-            else if (followMouse.Starttime + 20f < Time.time)
-            {
-                anim.SetBool("isMature", true);
-                sproutEffect.Play();
-                Destroy(gameObject, 3f);
-                treeCount += 1;
-                treeText.text = "Trees Planted: " + treeCount.ToString();
-            }
+            anim.SetBool("isSprouting", false);
         }
+        if (followMouse.Starttime + 4f < Time.time)
+        {
+            anim.SetBool("isGrowing", true);
+            //sproutEffect.Play();
+        }
+        else if (followMouse.Starttime + 6f > Time.time)
+        {
+            anim.SetBool("isGrowing", false);
+        }
+        if (followMouse.Starttime + 6f < Time.time)
+        {
+            anim.SetBool("isMature", true);
+            //sproutEffect.Play();
+            Destroy(gameObject, 3f);
+            treeCount += 1;
+            //treeText.text = "Trees Planted: " + treeCount.ToString();
+        }
+        
+
+        Debug.Log(followMouse.Starttime);
+            Debug.Log(Time.time);
+    }
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.CompareTag("water"))
+        {
+            followMouse.Starttime = Time.time;
+        }
+        
     }
 }
+
+
