@@ -7,8 +7,12 @@ public class PlantSprouting : MonoBehaviour
     public ParticleSystem sproutEffect;
     public FollowMouse followMouse;
     public Animator anim;
+<<<<<<< Updated upstream
     public TextMeshProUGUI treeText;
     public float treeCount;
+=======
+    public coinmanager cm;
+>>>>>>> Stashed changes
 
     void Start()
     {
@@ -16,9 +20,15 @@ public class PlantSprouting : MonoBehaviour
     }
 
 
-    void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.CompareTag("Water"))
+        {
+            if(other.gameObject.CompareTag("Coin"))
+            {
+                cm.coinCount++;
+            }
+        }
+        if (other.CompareTag("Water"))
         {
             if (followMouse.Starttime + 5f < Time.time)
             {
