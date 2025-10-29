@@ -1,4 +1,5 @@
 using UnityEngine;
+using Unity.Collections;
 
 public class FollowMouse : MonoBehaviour
 {
@@ -6,10 +7,15 @@ public class FollowMouse : MonoBehaviour
     [SerializeField] private float maxSpeed = 10f;
     [SerializeField] public ParticleSystem water;
     public float Starttime;
+    public Animator anim;
+    public bool isWatering;
 
     private void Start()
     {
+        anim = GetComponent<Animator>();
         mainCamera = Camera.main;
+        anim.SetBool("isIdle", true);
+        anim.SetBool("isWatering", false);
         water.Stop();
     }
 
@@ -23,6 +29,7 @@ public class FollowMouse : MonoBehaviour
     private void FollowMousePosition()
     {
         transform.position = GetWorldPositionFromMouse();
+        anim.SetBool("isIdle", true);
     }
 
     private void MouseDelayedFollow()
@@ -37,17 +44,21 @@ public class FollowMouse : MonoBehaviour
 
     public void PlayWaterEffect()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && transform.position.x == GetWorldPositionFromMouse().x && transform.position.y == GetWorldPositionFromMouse().y)
+        if (Input.GetMouseButtonDown(0) && transform.position.x == GetWorldPositionFromMouse().x && transform.position.y == GetWorldPositionFromMouse().y)
         {
             var ParticleMainSettings = water.main;
             ParticleMainSettings.loop = true;
             Starttime = Time.time;
+            isWatering = true;
+            anim.SetBool("isWatering", isWatering);
             water.Play();
         }
-        else if(Input.GetKeyUp(KeyCode.Mouse0))
+        else if(Input.GetMouseButtonUp(0))
         {
             var ParticleMainSettings = water.main;
             ParticleMainSettings.loop = false;
+            isWatering = false;
+            anim.SetBool("isWatering", isWatering);
         }
     }
 }
