@@ -7,12 +7,9 @@ public class PlantSprouting : MonoBehaviour
     public ParticleSystem sproutEffect;
     public FollowMouse followMouse;
     public Animator anim;
-<<<<<<< Updated upstream
     public TextMeshProUGUI treeText;
     public float treeCount;
-=======
     public coinmanager cm;
->>>>>>> Stashed changes
 
     void Start()
     {
