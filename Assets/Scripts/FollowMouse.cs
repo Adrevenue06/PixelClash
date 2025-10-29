@@ -4,7 +4,8 @@ public class FollowMouse : MonoBehaviour
 {
     private Camera mainCamera;
     [SerializeField] private float maxSpeed = 10f;
-    [SerializeField] private ParticleSystem water;
+    [SerializeField] public ParticleSystem water;
+    public float Starttime;
 
     private void Start()
     {
@@ -36,10 +37,11 @@ public class FollowMouse : MonoBehaviour
 
     public void PlayWaterEffect()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && transform.position.x == GetWorldPositionFromMouse().x && transform.position.y == GetWorldPositionFromMouse().y)
         {
             var ParticleMainSettings = water.main;
             ParticleMainSettings.loop = true;
+            Starttime = Time.time;
             water.Play();
         }
         else if(Input.GetKeyUp(KeyCode.Mouse0))
