@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class PlantSprouting : MonoBehaviour
 {
@@ -6,6 +7,8 @@ public class PlantSprouting : MonoBehaviour
     public ParticleSystem sproutEffect;
     public FollowMouse followMouse;
     public Animator anim;
+    public TextMeshProUGUI treeText;
+    public float treeCount;
 
     void Start()
     {
@@ -22,10 +25,18 @@ public class PlantSprouting : MonoBehaviour
                 anim.SetBool("isSprouting", true);
                 sproutEffect.Play();
             }
-            else if (followMouse.Starttime + 15f < Time.time)
+            else if (followMouse.Starttime + 10f < Time.time)
             {
                 anim.SetBool("isGrowing", true);
                 sproutEffect.Play();
+            }
+            else if (followMouse.Starttime + 20f < Time.time)
+            {
+                anim.SetBool("isMature", true);
+                sproutEffect.Play();
+                Destroy(gameObject, 3f);
+                treeCount += 1;
+                treeText.text = "Trees Planted: " + treeCount.ToString();
             }
         }
     }
