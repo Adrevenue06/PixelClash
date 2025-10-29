@@ -9,7 +9,6 @@ public class PlantSprouting : MonoBehaviour
     public Animator anim;
     public TextMeshProUGUI treeText;
     public float treeCount;
-    public coinmanager cm;
 
     void Start()
     {
@@ -20,31 +19,28 @@ public class PlantSprouting : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         {
-            if(other.gameObject.CompareTag("Coin"))
+            if (other.CompareTag("Water"))
             {
-                cm.coinCount++;
-            }
-        }
-        if (other.CompareTag("Water"))
-        {
-            if (followMouse.Starttime + 5f < Time.time)
-            {
-                anim.SetBool("isSprouting", true);
-                sproutEffect.Play();
-            }
-            else if (followMouse.Starttime + 10f < Time.time)
-            {
-                anim.SetBool("isGrowing", true);
-                sproutEffect.Play();
-            }
-            else if (followMouse.Starttime + 20f < Time.time)
-            {
-                anim.SetBool("isMature", true);
-                sproutEffect.Play();
-                Destroy(gameObject, 3f);
-                treeCount += 1;
-                treeText.text = "Trees Planted: " + treeCount.ToString();
+                if (followMouse.Starttime + 5f < Time.time)
+                {
+                    anim.SetBool("isSprouting", true);
+                    sproutEffect.Play();
+                }
+                else if (followMouse.Starttime + 10f < Time.time)
+                {
+                    anim.SetBool("isGrowing", true);
+                    sproutEffect.Play();
+                }
+                else if (followMouse.Starttime + 20f < Time.time)
+                {
+                    anim.SetBool("isMature", true);
+                    sproutEffect.Play();
+                    Destroy(gameObject, 3f);
+                    treeCount += 1;
+                    treeText.text = "Trees Planted: " + treeCount.ToString();
+                }
             }
         }
     }
 }
+
