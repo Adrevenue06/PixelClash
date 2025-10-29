@@ -15,15 +15,18 @@ public class PlantSprouting : MonoBehaviour
     public GameObject Frame4;
     public GameObject Frame5;
     public GameObject Frame6;
+    public PlantSpawner ps;
     public bool canTouching;
 
     void Start()
     {
+        ps = FindAnyObjectByType<PlantSpawner>();
+        followMouse = FindAnyObjectByType<FollowMouse>();
     }
 
     void Update()
     {
-        if (canTouching && followMouse.isWatering)
+        if (followMouse.isWatering)
         {
             Timer += Time.deltaTime;
             if (Timer >= 3f)
@@ -58,7 +61,9 @@ public class PlantSprouting : MonoBehaviour
                 //sproutEffect.Play();
                 Frame5.SetActive(false);
                 Frame6.SetActive(true);
+                ps.Spawn = true;
                 Destroy(gameObject, 3f);
+                Timer = 0;
                 //treeCount += 1;
                 //treeText.text = "Trees Planted: " + treeCount.ToString();
             }
@@ -66,10 +71,16 @@ public class PlantSprouting : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("watercan"))
+        if (other.gameObject.CompareTag("water"))
         {
             canTouching = true;
             Debug.Log("can touch");
+        }
+        else if(other.gameObject.layer == 4)
+        {
+            canTouching = true;
+            Debug.Log("can touch");
+            
         }
 
     }
